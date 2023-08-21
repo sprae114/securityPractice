@@ -14,7 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @EnableWebSecurity // 스프링 시큐리티가 제공하는 필터들이 자동으로 포함된다.
 @EnableGlobalMethodSecurity(prePostEnabled = true) // @PreAuthorize 어노테이션을 메소드 단위로 사용할 수 있게 한다.
-public class SecurityConfig{
+class SecurityConfig{
 
     /**
      * SecurityFilterChain 을 빈으로 등록하면, 필터 체인 설정을 할 수 있다.
