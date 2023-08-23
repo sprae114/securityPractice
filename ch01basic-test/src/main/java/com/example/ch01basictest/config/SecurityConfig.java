@@ -12,7 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
-@EnableWebSecurity // 스프링 시큐리티가 제공하는 필터들이 자동으로 포함된다.
+@EnableWebSecurity(debug = true) // 스프링 시큐리티가 제공하는 필터들이 자동으로 포함된다. : debug = true로 설정하면 필터에 대한 정보를 로그로 확인할 수 있다.
 @EnableGlobalMethodSecurity(prePostEnabled = true) // @PreAuthorize 어노테이션을 메소드 단위로 사용할 수 있게 한다.
 class SecurityConfig{
 
