@@ -2,15 +2,16 @@ package com.example.ch02basiclogin.config;
 
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.User;
 
-@Configuration
+@EnableWebSecurity // 웹 보안 활성화
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
@@ -23,13 +24,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .mvcMatchers("/").permitAll()  // "/"에 대한 요청은 모두 허용
                         .anyRequest().authenticated())  // 그 외의 요청은 인증 필요
             .formLogin(login -> login
-                    .loginPage("/login").permitAll()  // 로그인 페이지는 모두 허용
-                    .loginProcessingUrl("/loginprocess")  // 로그인 처리 URL : form 태그의 action 속성과 일치해야 함
+                    .loginPage("/login") // 로그인 페이지 주소
+                    .loginProcessingUrl("/loginprocess").permitAll()  // 로그인 처리 URL : form 태그의 action 속성과 일치해야 함
                     .defaultSuccessUrl("/", false)  // 로그인 성공 후 리다이렉트 주소
-                    .failureForwardUrl("/login-error"))  // 로그인 실패 후 리다이렉트 주소
+                    .failureUrl("/login-error"))  // 로그인 실패 후 주소
             .logout(logout -> logout
                     .logoutUrl("/logout")  // 로그아웃 주소
-                    .logoutSuccessUrl("/"))
+                    .logoutSuccessUrl("/")) // 로그아웃 성공 후 리다이렉트 주소
             .exceptionHandling(error->
                     error.accessDeniedPage("/access-denied")) // 접근 거부 페이지
         ;
