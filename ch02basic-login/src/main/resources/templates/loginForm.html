@@ -32,7 +32,7 @@
                 </label>
             </div>
             <button class="btn btn-lg btn-primary btn-block"  type="submit"> 로그인 </button>
-            <div class="error-message" >
+            <div class="error-message" th:if="${loginError}">
                 <span> 아이디나 패스워드가 올바르지 않습니다. </span>
             </div>
         </form>

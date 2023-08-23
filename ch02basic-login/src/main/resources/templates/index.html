@@ -21,17 +21,17 @@
 
     <div class="links">
 
-        <div class="link">
+        <div class="link" sec:authorize="!isAuthenticated()">  <!--  비 로그인 일 때만 보이게     -->
             <a href="/login">  로그인 </a>
         </div>
-        <div class="link">
+        <div class="link" sec:authorize="isAuthenticated()">
             <a href="/user-page">  유저 페이지  </a>
         </div>
-        <div class="link">
-            <a href="/admin-page">  관리자 로그인 </a>
+        <div class="link" sec:authorize="isAuthenticated()">
+            <a href="/admin-page">  관리자 페이지 </a>
         </div>
         <div class="link">
-            <form th:action="@{/logout}" method="post">
+            <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()">
                 <button class="btn btn-info" type="submit">  로그아웃 </button>
             </form>
         </div>
