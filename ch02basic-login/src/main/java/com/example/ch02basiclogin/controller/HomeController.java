@@ -49,14 +49,13 @@ public class HomeController {
     }
 
 
-    @PreAuthorize("hasAnyAuthority('ROLE_USER')") // ROLE_USER 권한이 있어야만 접근 가능
+    @PreAuthorize("hasAnyAuthority('ROLE_USER')")  // ROLE_USER 권한이 있어야만 접근 가능
     @GetMapping("/user-page")
     public String userPage() throws YouCannotAccessUserPage {
-        if(true) throw new YouCannotAccessUserPage();
         return "UserPage";
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')") // ROLE_ADMIN 권한이 있어야만 접근 가능
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")  // ROLE_ADMIN 권한이 있어야만 접근 가능
     @GetMapping("/admin-page")
     public String adminPage(){
         return "AdminPage";

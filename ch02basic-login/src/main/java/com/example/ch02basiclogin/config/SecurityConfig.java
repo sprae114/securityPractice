@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.User;
 
 @EnableWebSecurity // 웹 보안 활성화
+@EnableGlobalMethodSecurity(prePostEnabled = true) // 메소드 보안 활성화 : @PreAuthorize 어노테이션을 메소드에 사용할 수 있게 함
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
@@ -36,6 +37,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         ;
     }
 
+    /**
+     * 계정의 권한 계층 설정
+     * admin 계정은 user 계정의 권한을 모두 가지고 있음
+     */
+    @Bean
+    RoleHierarchy roleHierarchy(){
+        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+        roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_USER");
+        return roleHierarchy;
+    }
 
     /**
      * 로그인을 위한 계정 생성 및 권한 부여
@@ -53,15 +64,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .password("2222")
                     .roles("ADMIN"));
     }
-
-    /**
-     * 계정의 권한 계층 설정
-     * admin 계정은 user 계정의 권한을 모두 가지고 있음
-     */
-    @Bean
-    RoleHierarchy roleHierarchy(){
-        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-        roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_USER");
-        return roleHierarchy;
-    }
+    
 }
