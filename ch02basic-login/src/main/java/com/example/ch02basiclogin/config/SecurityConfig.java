@@ -24,6 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .anyRequest().authenticated())  // 그 외의 요청은 인증 필요
             .formLogin(login -> login
                     .loginPage("/login").permitAll()  // 로그인 페이지는 모두 허용
+                    .loginProcessingUrl("/loginprocess")  // 로그인 처리 URL : form 태그의 action 속성과 일치해야 함
                     .defaultSuccessUrl("/", false)  // 로그인 성공 후 리다이렉트 주소
                     .failureForwardUrl("/login-error"))  // 로그인 실패 후 리다이렉트 주소
             .logout(logout -> logout
