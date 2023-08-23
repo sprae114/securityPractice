@@ -48,6 +48,11 @@ public class HomeController {
         return "AccessDenied2";
     }
 
+    @ResponseBody
+    @GetMapping("/auth")
+    public Authentication auth(){
+        return SecurityContextHolder.getContext().getAuthentication();
+    }
 
     @PreAuthorize("hasAnyAuthority('ROLE_USER')")  // ROLE_USER 권한이 있어야만 접근 가능
     @GetMapping("/user-page")
@@ -62,10 +67,6 @@ public class HomeController {
     }
 
 
-    @ResponseBody
-    @GetMapping("/auth")
-    public Authentication auth(){
-        return SecurityContextHolder.getContext().getAuthentication();
-    }
+
 
 }
