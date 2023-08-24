@@ -3,7 +3,6 @@ package com.example.ch02basiclogin.controller;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,7 +47,7 @@ public class HomeController {
         return "AccessDenied2";
     }
 
-    @ResponseBody
+    @ResponseBody // Authentication 객체를 JSON 형태로 반환
     @GetMapping("/auth")
     public Authentication auth(){
         return SecurityContextHolder.getContext().getAuthentication();
@@ -65,8 +64,5 @@ public class HomeController {
     public String adminPage(){
         return "AdminPage";
     }
-
-
-
 
 }
