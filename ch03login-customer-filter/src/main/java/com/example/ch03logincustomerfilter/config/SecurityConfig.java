@@ -1,5 +1,7 @@
 package com.example.ch03logincustomerfilter.config;
 
+import com.example.ch03logincustomerfilter.student.StudentManager;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
@@ -13,7 +15,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
+
+    private final StudentManager studentManager;
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -31,6 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                     .accessDeniedPage("/access-denied"));
     }
 
+
     @Bean
     protected RoleHierarchy roleHierarchy(){
         RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
@@ -41,8 +48,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-            .withUser("user1").password("{noop}1111").roles("USER").and()
-            .withUser("admin").password("{noop}1111").roles("ADMIN");
+        auth.authenticationProvider(studentManager);
     }
 }
