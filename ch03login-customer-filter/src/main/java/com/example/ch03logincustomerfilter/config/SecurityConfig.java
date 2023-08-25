@@ -1,6 +1,7 @@
 package com.example.ch03logincustomerfilter.config;
 
 import com.example.ch03logincustomerfilter.student.StudentManager;
+import com.example.ch03logincustomerfilter.teacher.TeacherManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +20,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
     private final StudentManager studentManager;
-
+    private final TeacherManager teacherManager;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -30,6 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
             .formLogin(login -> login
                     .loginPage("/login")
                     .loginProcessingUrl("/login").permitAll()
+                    .defaultSuccessUrl("/", false)
                     .failureUrl("/login-error"))
             .logout(logout -> logout
                     .logoutUrl("/logout"))
@@ -41,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     @Bean
     protected RoleHierarchy roleHierarchy(){
         RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-        roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_USER");
+        roleHierarchy.setHierarchy("ROLE_TEACHER > ROLE_STUDENT");
         return roleHierarchy;
     }
 
@@ -49,5 +51,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(studentManager);
+        auth.authenticationProvider(teacherManager);
     }
 }
