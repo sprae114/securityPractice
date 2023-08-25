@@ -27,10 +27,10 @@ public class StudentManager implements AuthenticationProvider, InitializingBean 
      */
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        UsernamePasswordAuthenticationToken studentToken = (UsernamePasswordAuthenticationToken) authentication;
+        StudentAuthenticationToken studentToken = (StudentAuthenticationToken) authentication;
 
-        if (studentDB.containsKey(studentToken.getName())) { // 학생 아이디가 존재한다면
-            Student student = studentDB.get(studentToken.getName());
+        if (studentDB.containsKey(studentToken.getCredentials())) { // 학생 정보가 DB에 존재할 경우
+            Student student = studentDB.get(studentToken.getCredentials());
 
             return StudentAuthenticationToken.builder() // 학생 인증 토큰 생성
                     .principal(student)
@@ -49,7 +49,7 @@ public class StudentManager implements AuthenticationProvider, InitializingBean 
      */
     @Override
     public boolean supports(Class<?> authentication) {
-        return authentication == UsernamePasswordAuthenticationToken.class;
+        return authentication == StudentAuthenticationToken.class;
     }
 
     /**

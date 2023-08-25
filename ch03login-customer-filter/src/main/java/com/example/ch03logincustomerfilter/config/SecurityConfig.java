@@ -33,6 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                     .loginProcessingUrl("/login").permitAll()
                     .defaultSuccessUrl("/", false)
                     .failureUrl("/login-error"))
+            .addFilter(new CustomLoginFilter(authenticationManager())) // CustomLoginFilter를 추가 : 로그인 요청을 처리하는 필터
             .logout(logout -> logout
                     .logoutUrl("/logout"))
             .exceptionHandling(error -> error

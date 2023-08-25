@@ -1,9 +1,9 @@
 package com.example.ch03logincustomerfilter.config;
 
-import org.springframework.context.annotation.Configuration;
+import com.example.ch03logincustomerfilter.student.StudentAuthenticationToken;
+import com.example.ch03logincustomerfilter.teacher.TeacherAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -32,13 +32,19 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
         String type = request.getParameter("type");
 
         if (type == null || type.equals("student")){ // 학생일 경우
-            UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, password);
-            return this.getAuthenticationManager().authenticate(authRequest);
+            StudentAuthenticationToken authRequest = StudentAuthenticationToken.builder() // 학생 인증 토큰 생성
+                    .credentials(password)
+                    .build();
+
+            return this.getAuthenticationManager().authenticate(authRequest); // 인증 처리
         }
 
-        if (type.equals("teacher")) {
-            UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, password);
-            return this.getAuthenticationManager().authenticate(authRequest);
+        if (type.equals("teacher")) { // 선생님일 경우
+            TeacherAuthenticationToken authRequest = TeacherAuthenticationToken.builder()  // 선생님 인증 토큰 생성
+                    .credentials(password)
+                    .build();
+
+            return this.getAuthenticationManager().authenticate(authRequest); // 인증 처리
         }
 
         throw new AuthenticationServiceException("Authentication type not supported: " + type);
