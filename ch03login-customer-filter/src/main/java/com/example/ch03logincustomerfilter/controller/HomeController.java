@@ -1,6 +1,7 @@
 package com.example.ch03logincustomerfilter.controller;
 
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -33,6 +34,18 @@ public class HomeController {
         return SecurityContextHolder.getContext().getAuthentication();
     }
 
+
+    @PreAuthorize("hasAnyAuthority('ROLE_STUDENT')")
+    @GetMapping("/student/main")
+    public String studentMain(){
+        return "StudentMain";
+    }
+
+    @PreAuthorize("hasAnyAuthority('ROLE_TEACHER')")
+    @GetMapping("/teacher/main")
+    public String teacherMain(){
+        return "TeacherMain";
+    }
 
     @GetMapping("/access-denied")
     public String accessDenied(){
