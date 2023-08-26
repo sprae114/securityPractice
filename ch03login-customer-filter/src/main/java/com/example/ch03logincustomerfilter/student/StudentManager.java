@@ -34,9 +34,9 @@ public class StudentManager implements AuthenticationProvider, InitializingBean 
 
             return StudentAuthenticationToken.builder() // 학생 인증 토큰 생성
                     .principal(student)
-                    .credentials(student.getId())
                     .details(student.getUsername())
                     .authenticated(true)
+                    .authorities(student.getRole())
                     .build();
         }
 

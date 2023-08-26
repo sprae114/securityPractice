@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
 @EnableWebSecurity
@@ -27,15 +28,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         http.authorizeHttpRequests(request -> request
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                 .mvcMatchers("/", "/auth").permitAll()
-                .anyRequest().authenticated())
+                .anyRequest().authenticated()
+            )
             .formLogin(login -> login
                     .loginPage("/login")
                     .loginProcessingUrl("/login").permitAll()
                     .defaultSuccessUrl("/", false)
-                    .failureUrl("/login-error"))
-            .addFilter(new CustomLoginFilter(authenticationManager())) // CustomLoginFilter를 추가 : 로그인 요청을 처리하는 필터
+                    .failureUrl("/login-error")
+            )
+            .addFilterAt(new CustomLoginFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class) // CustomLoginFilter를 추가 : 로그인 요청을 처리하는 필터
             .logout(logout -> logout
-                    .logoutUrl("/logout"))
+                    .logoutUrl("/logout")
+                    .logoutSuccessUrl("/")
+            )
             .exceptionHandling(error -> error
                     .accessDeniedPage("/access-denied"));
     }

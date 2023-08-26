@@ -17,8 +17,6 @@ public class Teacher {
 
     private String id;
     private String username;
-
-    @JsonIgnore
     private Set<GrantedAuthority> role;
 
 }
