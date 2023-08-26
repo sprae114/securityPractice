@@ -31,22 +31,20 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 
         String type = request.getParameter("type");
 
-        if (type == null || type.equals("student")){ // 학생일 경우
+        if (type == null || !type.equals("teacher")){ // 선생님일 경우
             StudentAuthenticationToken authRequest = StudentAuthenticationToken.builder() // 학생 인증 토큰 생성
-                    .credentials(password)
+                    .credentials(username) // username을 credentials로 설정 : 비밀번호가 없으므로 이름으로 인증 확인
                     .build();
 
             return this.getAuthenticationManager().authenticate(authRequest); // 인증 처리
         }
 
-        if (type.equals("teacher")) { // 선생님일 경우
+        else { // 학생일 경우
             TeacherAuthenticationToken authRequest = TeacherAuthenticationToken.builder()  // 선생님 인증 토큰 생성
-                    .credentials(password)
+                    .credentials(username)
                     .build();
 
             return this.getAuthenticationManager().authenticate(authRequest); // 인증 처리
         }
-
-        throw new AuthenticationServiceException("Authentication type not supported: " + type);
     }
 }
