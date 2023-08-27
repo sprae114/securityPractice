@@ -58,6 +58,13 @@ public class HomeController {
         return "TeacherMain";
     }
 
+    @ResponseBody // JSON 형태로 응답
+    @PreAuthorize("hasAnyAuthority('ROLE_TEACHER')")
+    @GetMapping("/api/teacher/students")
+    public List<Student> studentList(@AuthenticationPrincipal Teacher teacher){
+        return studentManager.myStudents(teacher.getId());
+    }
+
     @GetMapping("/access-denied")
     public String accessDenied(){
         return "AccessDenied";
