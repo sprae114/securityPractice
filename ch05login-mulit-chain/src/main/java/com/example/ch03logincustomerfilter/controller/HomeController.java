@@ -1,16 +1,26 @@
 package com.example.ch03logincustomerfilter.controller;
 
 
+import com.example.ch03logincustomerfilter.student.Student;
+import com.example.ch03logincustomerfilter.student.StudentManager;
+import com.example.ch03logincustomerfilter.teacher.Teacher;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+
 @Controller
 public class HomeController {
+
+    @Autowired
+    StudentManager studentManager;
 
     @GetMapping("/")
     public String index(){
@@ -43,7 +53,8 @@ public class HomeController {
 
     @PreAuthorize("hasAnyAuthority('ROLE_TEACHER')")
     @GetMapping("/teacher/main")
-    public String teacherMain(){
+    public String teacherMain(@AuthenticationPrincipal Teacher teacher, Model model){
+        model.addAttribute("studentList", studentManager.myStudents(teacher.getId()));
         return "TeacherMain";
     }
 

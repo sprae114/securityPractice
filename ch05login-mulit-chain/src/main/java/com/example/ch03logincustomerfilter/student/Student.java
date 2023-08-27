@@ -15,4 +15,5 @@ public class Student {
     private String id; // 학생 아이디
     private String username; // 학생 이름
     private Set<GrantedAuthority> role; // 권한 목록
+    private String teacherId; // 담당 선생님 아이디
 }
