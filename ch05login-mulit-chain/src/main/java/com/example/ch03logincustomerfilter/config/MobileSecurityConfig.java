@@ -12,7 +12,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
-@Order(1) // 순서를 지정 : 1이 가장 먼저 적용
+@Order(2) // 순서를 지정 : 1이 가장 먼저 적용
 @Configuration // 스프링 설정 클래스
 @RequiredArgsConstructor
 public class MobileSecurityConfig extends WebSecurityConfigurerAdapter{

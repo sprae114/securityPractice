@@ -24,25 +24,41 @@ public class StudentManager implements AuthenticationProvider, InitializingBean 
 
 
     /**
-     * 인증 처리
+     * 인증 처리(UsernamePasswordAuthenticationToken, StudentAuthenticationToken)
      * @param authentication : 인증 객체
      */
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+
+        if(authentication instanceof UsernamePasswordAuthenticationToken){
+            UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) authentication;
+            if(studentDB.containsKey(token.getName())){
+                return getAuthenticationToken(token.getName());
+            }
+            return null;
+        }
+
         StudentAuthenticationToken studentToken = (StudentAuthenticationToken) authentication;
 
         if (studentDB.containsKey(studentToken.getCredentials())) { // 학생 정보가 DB에 존재할 경우
-            Student student = studentDB.get(studentToken.getCredentials());
-
-            return StudentAuthenticationToken.builder() // 학생 인증 토큰 생성
-                    .principal(student)
-                    .details(student.getUsername())
-                    .authenticated(true)
-                    .authorities(student.getRole())
-                    .build();
+            return getAuthenticationToken(studentToken.getCredentials());
         }
 
         return null; // 인증 실패할 경우 null 반환
+    }
+
+    /**
+     * db에 저장된 학생 정보를 가져와 인증 토큰 생성
+     * @param id
+     */
+    private StudentAuthenticationToken getAuthenticationToken(String id) {
+        Student student = studentDB.get(id);
+
+        return StudentAuthenticationToken.builder() // 학생 인증 토큰 생성
+                .principal(student)
+                .details(student.getUsername())
+                .authenticated(true)
+                .build();
     }
 
     /**
@@ -51,7 +67,10 @@ public class StudentManager implements AuthenticationProvider, InitializingBean 
      */
     @Override
     public boolean supports(Class<?> authentication) {
-        return authentication == StudentAuthenticationToken.class;
+        return authentication == StudentAuthenticationToken.class
+                || authentication == UsernamePasswordAuthenticationToken.class;
+                // UsernamePasswordAuthenticationToken도 지원 : Basic 인증을 위해
+
     }
 
     /**
