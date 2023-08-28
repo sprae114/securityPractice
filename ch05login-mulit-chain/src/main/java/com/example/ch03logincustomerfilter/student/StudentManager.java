@@ -58,6 +58,7 @@ public class StudentManager implements AuthenticationProvider, InitializingBean 
                 .principal(student)
                 .details(student.getUsername())
                 .authenticated(true)
+                .authorities(student.getRole())
                 .build();
     }
 
